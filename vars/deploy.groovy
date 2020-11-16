@@ -50,7 +50,9 @@ def call() {
               git clone https://$GITHUB_CREDS_USR:$GITHUB_CREDS_PSW@github.com/markvr/$CONFIG_REPO
               cd $CONFIG_REPO
             fi
-            sed -i -E  "s/$IMAGE:(.*)/$IMAGE:$TAG/" $DSL_FILE
+            # The double slashes below are because we are in a groovy string,
+            # i.e. \\ is escaped and becomes a single slash when the command runs.
+            sed -i -E  "s/tag\\('.*'\\)/tag\\('$TAG'\\)/" $DSL_FILE
             git commit -a -m "Updated $IMAGE to $TAG"
             git push
             '''
